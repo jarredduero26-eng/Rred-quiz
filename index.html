@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jarred's Universe Quiz</title>
+
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- =========================
+         UNIVERSE BACKGROUND
+    ========================== -->
+    <div class="space-background">
+        <div class="stars stars-1"></div>
+        <div class="stars stars-2"></div>
+        <div class="stars stars-3"></div>
+
+        <div class="planet planet-one"></div>
+        <div class="planet planet-two"></div>
+
+        <div class="nebula"></div>
+    </div>
+
+    <div id="clickLight"></div>
+
+
+    <!-- =========================
+         TOP PAGE INDICATOR
+    ========================== -->
+    <header class="top-bar">
+
+        <div class="brand">
+            <span class="brand-symbol">◇</span>
+            RRED UNIVERSE
+        </div>
+
+        <div class="page-indicator">
+            <span id="pageNumber">01</span>
+            <div class="indicator-line">
+                <div id="indicatorProgress"></div>
+            </div>
+            <span id="pageName">WELCOME</span>
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         PAGE 1 — NAME
+    ========================== -->
+    <main>
+
+        <section class="quiz-page active-page" id="namePage">
+
+            <div class="diamond-decoration"></div>
+
+            <div class="quiz-card intro-card">
+
+                <div class="small-label">
+                    A little journey through the life of Rred 
+                </div>
+
+                <h1>
+                    WELCOME TO<br>
+                    <span>MY UNIVERSE</span>
+                </h1>
+
+                <p class="intro-text">
+                    Before entering Rred personal universe,
+                    identify yourself first.
+                </p>
+
+                <div class="input-group">
+
+                    <label for="firstName">
+                        FIRST NAME
+                    </label>
+
+                    <input
+                        type="text"
+                        id="firstName"
+                        placeholder="Enter your first name"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label for="lastName">
+                        LAST NAME
+                    </label>
+
+                    <input
+                        type="text"
+                        id="lastName"
+                        placeholder="Enter your last name"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <p id="nameError" class="error-message"></p>
+
+                <button
+                    type="button"
+                    class="main-button"
+                    id="startButton"
+                >
+                    ENTER THE QUIZ
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PAGE 2 — RULES
+        ========================== -->
+        <section class="quiz-page" id="rulesPage">
+
+            <div class="quiz-card rules-card">
+
+                <div class="page-tag">
+                    02 / RULES
+                </div>
+
+                <h2>
+                    KNOW ME
+                    <span>IF YOU CAN.</span>
+                </h2>
+
+                <div class="rule-list">
+
+                    <div class="rule">
+                        <span>01</span>
+                        <p>
+                            Every question is about Jarred.
+                        </p>
+                    </div>
+
+                    <div class="rule">
+                        <span>02</span>
+                        <p>
+                            Each question has four choices.
+                        </p>
+                    </div>
+
+                    <div class="rule">
+                        <span>03</span>
+                        <p>
+                            Choose carefully.
+                        </p>
+                    </div>
+
+                    <div class="rule danger-rule">
+                        <span>04</span>
+                        <p>
+                            One wrong answer means the quiz ends immediately.
+                        </p>
+                    </div>
+
+                    <div class="rule">
+                        <span>05</span>
+                        <p>
+                            Get everything correct to unlock the special
+                            friendship ending.
+                        </p>
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="main-button"
+                    data-next="quizPage"
+                >
+                    ACCEPT & START
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PAGE 3 — QUIZ
+        ========================== -->
+        <section class="quiz-page" id="quizPage">
+
+            <div class="quiz-card question-card">
+
+                <div class="quiz-top">
+
+                    <div>
+                        <div class="page-tag">
+                            PERSONAL QUIZ
+                        </div>
+
+                        <div id="questionNumber">
+                            QUESTION 01
+                        </div>
+                    </div>
+
+                    <div class="score-box">
+                        SCORE
+                        <strong id="scoreDisplay">0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="question-progress">
+                    <div id="questionProgress"></div>
+                </div>
+
+
+                <h2 id="questionText">
+                    Question goes here
+                </h2>
+
+
+                <div
+                    class="choices"
+                    id="choicesContainer"
+                >
+                    <!-- JavaScript inserts choices -->
+                </div>
+
+
+                <div
+                    id="questionMessage"
+                    class="question-message"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PAGE 4 — FAILED
+        ========================== -->
+        <section class="quiz-page" id="failedPage">
+
+            <div class="quiz-card result-card failed-card">
+
+                <div class="result-icon">
+                    ×
+                </div>
+
+                <div class="page-tag">
+                    QUIZ TERMINATED
+                </div>
+
+                <h2>
+                    NOT THIS TIME.
+                </h2>
+
+                <p id="failedMessage">
+                    You got one of the answers wrong.
+                </p>
+
+                <div class="final-score">
+
+                    <span>FINAL SCORE</span>
+
+                    <strong id="failedScore">
+                        0 / 12
+                    </strong>
+
+                </div>
+
+                <div
+                    class="judgement"
+                    id="failedJudgement"
+                >
+                    QUIZ NOT PASSED
+                </div>
+
+                <button
+                    type="button"
+                    class="main-button"
+                    id="retryButton"
+                >
+                    TRY AGAIN
+                    <span>↻</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PAGE 5 — PERFECT
+        ========================== -->
+        <section class="quiz-page" id="perfectPage">
+
+            <div class="quiz-card perfect-card">
+
+                <div class="perfect-symbol">
+                    ✦
+                </div>
+
+                <div class="page-tag">
+                    PERFECT SCORE
+                </div>
+
+                <h2>
+                    YOU KNOW
+                    <span>JARRED.</span>
+                </h2>
+
+                <p>
+                    Every answer was correct.
+                </p>
+
+                <div class="perfect-score">
+                    12 / 12
+                </div>
+
+                <p class="special-text">
+                    You have unlocked the special friendship page.
+                </p>
+
+                <button
+                    type="button"
+                    class="main-button"
+                    data-next="friendshipPage"
+                >
+                    CONTINUE
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PAGE 6 — FRIENDSHIP
+        ========================== -->
+        <section class="quiz-page" id="friendshipPage">
+
+            <div class="quiz-card friendship-card">
+
+                <div class="friendship-glow"></div>
+
+                <div class="friendship-symbol">
+                    ♡
+                </div>
+
+                <div class="page-tag">
+                    SPECIAL FRIENDSHIP PAGE
+                </div>
+
+                <h2>
+                    ONE LAST
+                    <span>QUESTION.</span>
+                </h2>
+
+                <p class="friendship-question">
+                    Do you consider Jarred a close friend?
+                </p>
+
+                <div class="yes-no-buttons">
+
+                    <button
+                        type="button"
+                        class="answer-button yes-button"
+                        id="yesFriend"
+                    >
+                        YES
+                    </button>
+
+                    <button
+                        type="button"
+                        class="answer-button no-button"
+                        id="noFriend"
+                    >
+                        NO
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PAGE 7 — FLOWER
+        ========================== -->
+        <section class="quiz-page" id="flowerPage">
+
+            <div class="flower-page">
+
+                <div class="flower-stars"></div>
+
+                <div class="flower-container">
+
+                    <div class="flower">
+                        <div class="petal petal-1"></div>
+                        <div class="petal petal-2"></div>
+                        <div class="petal petal-3"></div>
+                        <div class="petal petal-4"></div>
+                        <div class="petal petal-5"></div>
+                        <div class="flower-center"></div>
+                    </div>
+
+                    <div class="stem"></div>
+                    <div class="leaf leaf-left"></div>
+                    <div class="leaf leaf-right"></div>
+
+                </div>
+
+                <h2>
+                    FRIENDSHIP
+                    <span>UNLOCKED.</span>
+                </h2>
+
+                <p>
+                    Thank you for knowing Jarred so well.
+                </p>
+
+                <button
+                    type="button"
+                    class="main-button"
+                    id="flowerFinish"
+                >
+                    FINISH
+                    <span>✓</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PAGE 8 — THANK YOU
+        ========================== -->
+        <section class="quiz-page" id="thankYouPage">
+
+            <div class="quiz-card result-card">
+
+                <div class="result-icon">
+                    ✓
+                </div>
+
+                <div class="page-tag">
+                    THANK YOU
+                </div>
+
+                <h2>
+                    THANK YOU
+                    <span>FOR PLAYING.</span>
+                </h2>
+
+                <p>
+                    Your answers have been recorded for this session.
+                </p>
+
+                <button
+                    type="button"
+                    class="main-button"
+                    id="exitButton"
+                >
+                    EXIT
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SCORE HISTORY
+        ========================== -->
+        <section class="quiz-page" id="historyPage">
+
+            <div class="quiz-card history-card">
+
+                <div class="page-tag">
+                    SCORE HISTORY
+                </div>
+
+                <h2>
+                    QUIZ
+                    <span>RECORDS.</span>
+                </h2>
+
+                <div id="historyList">
+                    <!-- JavaScript -->
+                </div>
+
+                <button
+                    type="button"
+                    class="main-button"
+                    id="clearHistory"
+                >
+                    CLEAR RECORDS
+                    <span>×</span>
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         BOTTOM STATUS
+    ========================== -->
+    <div class="bottom-status">
+
+        <span class="status-dot"></span>
+
+        <span id="statusText">
+            UNIVERSE ONLINE
+        </span>
+
+    </div>
+
+
+    <!-- Page dots -->
+    <div class="page-dots">
+
+        <span class="dot active-dot" data-page="namePage"></span>
+        <span class="dot" data-page="rulesPage"></span>
+        <span class="dot" data-page="quizPage"></span>
+        <span class="dot" data-page="failedPage"></span>
+        <span class="dot" data-page="perfectPage"></span>
+        <span class="dot" data-page="friendshipPage"></span>
+        <span class="dot" data-page="flowerPage"></span>
+
+    </div>
+
+</body>
+</html>
