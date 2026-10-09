@@ -1,1067 +1,378 @@
-/* =====================================================
-   JARRED FRIEND QUIZ
-===================================================== */
 
+const $ = (id) => document.getElementById(id);
 
-/* =====================================================
-   PERSONAL INFORMATION
-===================================================== */
-
-const quizQuestions = [
-
-    {
-        question: "What is Jarred's full name?",
-        correct: "Jarred D. Duero",
-        wrong: [
-            "Jarred D. Dalonhao",
-            "Jarred Duero Reyes",
-            "Jarred Daniel Duero"
-        ]
-    },
-
-    {
-        question: "What is Jarred's favorite color?",
-        correct: "Red",
-        wrong: [
-            "Blue",
-            "Green",
-            "Black"
-        ]
-    },
-
-    {
-        question: "What food does Jarred like?",
-        correct: "Fried chicken",
-        wrong: [
-            "Pizza",
-            "Spaghetti",
-            "Fish"
-        ]
-    },
-
-    {
-        question: "What is Jarred's favorite sport?",
-        correct: "Basketball",
-        wrong: [
-            "Volleyball",
-            "Football",
-            "Badminton"
-        ]
-    },
-
-    {
-        question: "Where can you usually find Jarred?",
-        correct: "Basketball court",
-        wrong: [
-            "Swimming pool",
-            "Library",
-            "Computer laboratory"
-        ]
-    },
-
-    {
-        question: "What is Jarred's favorite mobile game?",
-        correct: "ML",
-        wrong: [
-            "Free Fire",
-            "Roblox",
-            "Clash of Clans"
-        ]
-    },
-
-    {
-        question: "When is Jarred's birthday?",
-        correct: "March 26, 2008",
-        wrong: [
-            "March 28, 2008",
-            "February 26, 2008",
-            "April 26, 2008"
-        ]
-    },
-
-    {
-        question: "What is Jarred's middle name?",
-        correct: "Dalonhao",
-        wrong: [
-            "Duero",
-            "Dela Cruz",
-            "Daniel"
-        ]
-    },
-
-    {
-        question: "What hairstyle did Jarred like before?",
-        correct: "Mullet haircut",
-        wrong: [
-            "Buzz cut",
-            "Two-block haircut",
-            "Crew cut"
-        ]
-    },
-
-    {
-        question: "What is Jarred's favorite snack?",
-        correct: "Burger",
-        wrong: [
-            "Donut",
-            "Chips",
-            "Ice cream"
-        ]
-    },
-
-    {
-        question: "What is Jarred's dream job?",
-        correct: "Police officer",
-        wrong: [
-            "Doctor",
-            "Engineer",
-            "Pilot"
-        ]
-    },
-
-    {
-        question: "How many exes does Jarred have?",
-        correct: "1",
-        wrong: [
-            "0",
-            "2",
-            "3"
-        ]
-    }
-
+const pages = [
+  "loginPage", "gamePage", "friendPage",
+  "exitPage", "universePage", "finalPage"
 ];
 
-
-/* =====================================================
-   PAGE DATA
-===================================================== */
-
-const pageData = {
-
-    namePage: {
-        number: "01",
-        name: "WELCOME",
-        progress: 12
-    },
-
-    rulesPage: {
-        number: "02",
-        name: "RULES",
-        progress: 24
-    },
-
-    quizPage: {
-        number: "03",
-        name: "QUIZ",
-        progress: 38
-    },
-
-    failedPage: {
-        number: "04",
-        name: "RESULT",
-        progress: 50
-    },
-
-    perfectPage: {
-        number: "05",
-        name: "PERFECT",
-        progress: 65
-    },
-
-    friendshipPage: {
-        number: "06",
-        name: "FRIENDSHIP",
-        progress: 78
-    },
-
-    flowerPage: {
-        number: "07",
-        name: "FLOWER",
-        progress: 90
-    },
-
-    thankYouPage: {
-        number: "08",
-        name: "THANK YOU",
-        progress: 100
-    }
-
-};
-
-
-/* =====================================================
-   VARIABLES
-===================================================== */
-
-let currentQuestion = 0;
-let score = 0;
-let playerName = "";
-
-const totalQuestions =
-    quizQuestions.length;
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const pages =
-    document.querySelectorAll(".quiz-page");
-
-const pageNumber =
-    document.getElementById("pageNumber");
-
-const pageName =
-    document.getElementById("pageName");
-
-const indicatorProgress =
-    document.getElementById("indicatorProgress");
-
-const clickLight =
-    document.getElementById("clickLight");
-
-const statusText =
-    document.getElementById("statusText");
-
-
-/* =====================================================
-   SHOW PAGE
-===================================================== */
-
 function showPage(id) {
-
-    pages.forEach(page => {
-        page.classList.remove("active-page");
-    });
-
-    const target =
-        document.getElementById(id);
-
-    if (!target) return;
-
-    target.classList.add("active-page");
-
-    updatePageIndicator(id);
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-    updateDots(id);
-
+  pages.forEach(page => $(page).classList.toggle("hidden", page !== id));
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-
-/* =====================================================
-   PAGE INDICATOR
-===================================================== */
-
-function updatePageIndicator(id) {
-
-    const data = pageData[id];
-
-    if (!data) return;
-
-    pageNumber.textContent =
-        data.number;
-
-    pageName.textContent =
-        data.name;
-
-    indicatorProgress.style.width =
-        data.progress + "%";
-
+// Cinematic star field
+function createStars(container, count, className = "") {
+  for (let i = 0; i < count; i++) {
+    const star = document.createElement("i");
+    star.className = className;
+    star.style.cssText = `
+      position:absolute;
+      left:${Math.random() * 100}%;
+      top:${Math.random() * 100}%;
+      width:${Math.random() > .8 ? 3 : 1.5}px;
+      height:${Math.random() > .8 ? 3 : 1.5}px;
+      background:#e3ffe9;
+      border-radius:50%;
+      opacity:${Math.random() * .7 + .15};
+      box-shadow:0 0 ${Math.random() * 8 + 2}px #a5ffc2;
+      animation:starTwinkle ${Math.random() * 3 + 2}s ease-in-out infinite alternate;
+    `;
+    container.appendChild(star);
+  }
 }
+createStars($("stars"), 110);
+createStars($("universeStars"), 130);
 
+// Make the agent's pupils follow the mouse.
+document.addEventListener("mousemove", event => {
+  document.querySelectorAll(".eye").forEach(eye => {
+    const pupil = eye.querySelector("b");
+    const rect = eye.getBoundingClientRect();
+    const dx = event.clientX - (rect.left + rect.width / 2);
+    const dy = event.clientY - (rect.top + rect.height / 2);
+    const angle = Math.atan2(dy, dx);
+    pupil.style.transform =
+      `translate(${Math.cos(angle) * 3}px, ${Math.sin(angle) * 3}px)`;
+  });
+});
 
-/* =====================================================
-   PAGE DOTS
-===================================================== */
+// 30 questions. Answer choices are shuffled each time.
+const questions = [
+  { q: "Which number is the key to this agent's identity?", a: ["26", "08", "17", "05"], c: "26" },
+  { q: "Which basketball position belongs in the personnel file?", a: ["Small Forward", "Point Guard", "Center", "Power Forward"], c: "Small Forward" },
+  { q: "After a long mission, which food is the agent's favorite?", a: ["Fried chicken", "Pizza", "Pancit", "Spaghetti"], c: "Fried chicken" },
+  { q: "Which snack and color combination is correct?", a: ["Pillows — violet", "Pillows — red", "Cookies — violet", "Chips — blue"], c: "Pillows — violet" },
+  { q: "Which year appears in the agent's life file?", a: ["2008", "2006", "2007", "2009"], c: "2008" },
+  { q: "Which municipality is the agent's birthplace?", a: ["Talakag", "Claveria", "Balingasag", "Opol"], c: "Talakag" },
+  { q: "Region X is another name for which region?", a: ["Northern Mindanao", "Davao Region", "Caraga", "Central Visayas"], c: "Northern Mindanao" },
+  { q: "Which province is connected to the agent's birthplace?", a: ["Bukidnon", "Misamis Oriental", "Surigao del Sur", "Lanao del Norte"], c: "Bukidnon" },
+  { q: "Which sport would most likely lead you to the agent's favorite place?", a: ["Basketball", "Volleyball", "Badminton", "Football"], c: "Basketball" },
+  { q: "An opponent misses a shot. What basketball role matches a player who loves collecting that rebound?", a: ["Rebound chaser", "Three-point specialist", "Point guard only", "Referee"], c: "Rebound chaser" },
+  { q: "Which course is written in the agent's file?", a: ["BSIT", "BSCS", "BSHM", "BSED"], c: "BSIT" },
+  { q: "Choose the correct college and city combination.", a: ["USTP, CDO", "A college in Claveria", "A university in Cebu", "A university in Manila"], c: "USTP, CDO" },
+  { q: "Which height matches the personnel file?", a: ["5'7\"", "5'5\"", "5'6\"", "5'9\""], c: "5'7\"" },
+  { q: "Which flower is the agent's favorite?", a: ["Rose", "Tulip", "Sunflower", "Orchid"], c: "Rose" },
+  { q: "Where would you most likely find the agent spending time?", a: ["Basketball court", "Library", "Cafeteria", "Computer lab"], c: "Basketball court" },
+  { q: "What profession is the agent's dream?", a: ["Police officer", "Pilot", "Architect", "Chef"], c: "Police officer" },
+  { q: "Who is the agent's favorite person in the family?", a: ["His mother", "His cousin", "His uncle", "His grandfather"], c: "His mother" },
+  { q: "Which name belongs to the agent's brother who died before birth?", a: ["Marven D. Duero", "Martin D. Duero", "Marvin D. Dureo", "Marlon D. Duero"], c: "Marven D. Duero" },
+  { q: "Which anime character is the agent's favorite?", a: ["Saitama", "Naruto", "Luffy", "Goku"], c: "Saitama" },
+  { q: "Which color wins the agent's favorite-color choice?", a: ["Red", "Blue", "Black", "Green"], c: "Red" },
+  { q: "Which game belongs to the agent's past gaming interests?", a: ["Pokemon", "Roblox", "Free Fire", "Clash of Clans"], c: "Pokemon" },
+  { q: "Which game is part of the agent's present gaming interests?", a: ["Mobile Legends", "Minecraft", "Pokemon", "Call of Duty"], c: "Mobile Legends" },
+  { q: "Decode the agent's online order: first, second, then third.", a: ["Facebook → TikTok → Instagram", "TikTok → Instagram → Facebook", "Instagram → Facebook → TikTok", "Facebook → Instagram → TikTok"], c: "Facebook → TikTok → Instagram" },
+  { q: "Which workout belongs in the agent's routine?", a: ["Push-ups", "Sit-ups only", "Cycling only", "Jump rope only"], c: "Push-ups" },
+  { q: "Which drink belongs in the agent's favorites?", a: ["Pocari", "Cola", "Coffee", "Milk tea"], c: "Pocari" },
+  { q: "The file gives the number 26. Which choice repeats it exactly?", a: ["26", "62", "206", "2006"], c: "26" },
+  { q: "Which pairing matches both the agent's course and college?", a: ["BSIT — USTP, CDO", "BSCS — Claveria", "BSHM — Cebu", "BSED — Manila"], c: "BSIT — USTP, CDO" },
+  { q: "Which two details belong together in the agent's profile?", a: ["Rose and red", "Tulip and blue", "Orchid and black", "Sunflower and violet"], c: "Rose and red" },
+  { q: "Which pair correctly matches the agent's old and current games?", a: ["Pokemon → Mobile Legends", "Mobile Legends → Pokemon", "Roblox → Free Fire", "Free Fire → Minecraft"], c: "Pokemon → Mobile Legends" },
+  { q: "Which complete profile combination matches the agent?", a: ["BSIT, basketball, police officer", "BSCS, volleyball, pilot", "BSHM, football, chef", "BSED, badminton, architect"], c: "BSIT, basketball, police officer" }
+];
 
-function updateDots(id) {
-
-    document
-        .querySelectorAll(".dot")
-        .forEach(dot => {
-
-            dot.classList.remove("active-dot");
-
-            if (
-                dot.dataset.page === id
-            ) {
-
-                dot.classList.add(
-                    "active-dot"
-                );
-
-            }
-
-        });
-
-}
-
-
-/* =====================================================
-   NAME PAGE
-===================================================== */
-
-const startButton =
-    document.getElementById("startButton");
-
-startButton.addEventListener(
-    "click",
-    function () {
-
-        const first =
-            document
-                .getElementById("firstName")
-                .value
-                .trim();
-
-        const last =
-            document
-                .getElementById("lastName")
-                .value
-                .trim();
-
-        const error =
-            document.getElementById("nameError");
-
-        if (!first || !last) {
-
-            error.textContent =
-                "Please enter your first and last name.";
-
-            createLightAtButton(this);
-
-            return;
-        }
-
-        playerName =
-            `${first} ${last}`;
-
-        error.textContent = "";
-
-        createLightAtButton(this);
-
-        setTimeout(() => {
-
-            showPage("rulesPage");
-
-        }, 350);
-
-    }
-);
-
-
-/* =====================================================
-   NEXT BUTTONS
-===================================================== */
-
-document
-    .querySelectorAll("[data-next]")
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                const next =
-                    this.dataset.next;
-
-                createLightAtButton(this);
-
-                setTimeout(() => {
-
-                    showPage(next);
-
-                    if (
-                        next === "quizPage"
-                    ) {
-
-                        startQuiz();
-
-                    }
-
-                }, 250);
-
-            }
-        );
-
-    });
-
-
-/* =====================================================
-   START QUIZ
-===================================================== */
-
-function startQuiz() {
-
-    currentQuestion = 0;
-    score = 0;
-
-    document
-        .getElementById("scoreDisplay")
-        .textContent = score;
-
-    loadQuestion();
-
-}
-
-
-/* =====================================================
-   RANDOMIZE ARRAY
-===================================================== */
+let questionIndex = 0;
+let hearts = 3;
+let score = 0;
+let answered = false;
+let gameOver = false;
 
 function shuffle(array) {
-
-    const copy =
-        [...array];
-
-    for (
-        let i = copy.length - 1;
-        i > 0;
-        i--
-    ) {
-
-        const j =
-            Math.floor(
-                Math.random() *
-                (i + 1)
-            );
-
-        [
-            copy[i],
-            copy[j]
-        ] =
-        [
-            copy[j],
-            copy[i]
-        ];
-
-    }
-
-    return copy;
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
 }
 
+// Demo login only: checks input format, not Facebook identity.
+$("loginForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const email = $("email").value.trim();
+  const password = $("password").value;
+  const error = $("loginError");
 
-/* =====================================================
-   LOAD QUESTION
-===================================================== */
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    error.textContent = "⚠ Invalid email format. Check your email and try again.";
+    return;
+  }
+  if (password.length < 4) {
+    error.textContent = "⚠ Demo password must contain at least 4 characters.";
+    return;
+  }
 
-function loadQuestion() {
+  error.textContent = "";
+  startGame();
+});
 
-    const question =
-        quizQuestions[currentQuestion];
+function startGame() {
+  questionIndex = 0;
+  hearts = 3;
+  score = 0;
+  answered = false;
+  gameOver = false;
 
-    const questionText =
-        document.getElementById(
-            "questionText"
-        );
+  $("gameAgent").style.left = "18%";
+  $("gameAgent").style.filter = "";
+  $("gameAgent").classList.remove("walking");
+  $("startDoor").classList.remove("unlocked");
+  $("nextDoor").classList.remove("unlocked");
 
-    const questionNumber =
-        document.getElementById(
-            "questionNumber"
-        );
-
-    const choicesContainer =
-        document.getElementById(
-            "choicesContainer"
-        );
-
-    const progress =
-        document.getElementById(
-            "questionProgress"
-        );
-
-    questionText.textContent =
-        question.question;
-
-    questionNumber.textContent =
-        `QUESTION ${String(
-            currentQuestion + 1
-        ).padStart(2, "0")}`;
-
-    progress.style.width =
-        `${(
-            currentQuestion /
-            totalQuestions
-        ) * 100}%`;
-
-    choicesContainer.innerHTML = "";
-
-    const choices =
-        shuffle([
-            {
-                text: question.correct,
-                correct: true
-            },
-
-            ...question.wrong.map(
-                answer => ({
-                    text: answer,
-                    correct: false
-                })
-            )
-        ]);
-
-    const letters =
-        ["A", "B", "C", "D"];
-
-    choices.forEach(
-        (choice, index) => {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-            button.type =
-                "button";
-
-            button.className =
-                "choice-button";
-
-            button.innerHTML = `
-                <span class="choice-letter">
-                    ${letters[index]}
-                </span>
-
-                <span>
-                    ${choice.text}
-                </span>
-            `;
-
-            button.addEventListener(
-                "click",
-                function () {
-
-                    createLightAtButton(this);
-
-                    handleAnswer(
-                        choice.correct
-                    );
-
-                }
-            );
-
-            choicesContainer.appendChild(
-                button
-            );
-
-        }
-    );
-
+  showPage("gamePage");
+  renderQuestion();
 }
 
+function renderQuestion() {
+  answered = false;
+  const item = questions[questionIndex];
 
-/* =====================================================
-   HANDLE ANSWER
-===================================================== */
+  $("questionCount").textContent =
+    `${String(questionIndex + 1).padStart(2, "0")} / 30`;
+  $("questionNumber").textContent =
+    `QUESTION ${String(questionIndex + 1).padStart(2, "0")}`;
+  $("questionText").textContent = item.q;
+  $("progressBar").style.width = `${(questionIndex / 30) * 100}%`;
+  $("hearts").textContent = hearts > 0 ? Array(hearts).fill("♥").join(" ") : "—";
+  $("feedback").textContent = "";
+  $("feedback").className = "feedback";
+  $("nextBtn").classList.add("hidden");
+  $("nextBtn").textContent = questionIndex === 29 ? "COMPLETE MISSION →" : "OPEN NEXT DOOR →";
+  $("answers").innerHTML = "";
+  $("worldCaption").textContent = "AGENT RRED: AWAITING YOUR ANSWER";
+  $("gameAgent").classList.remove("walking");
+  $("gameAgent").style.filter = "";
 
-function handleAnswer(correct) {
+  $("startDoor").classList.add("unlocked");
+  $("nextDoor").classList.remove("unlocked");
+  $("nextDoor").querySelector("small").textContent = "LOCKED";
+  $("nextDoor").querySelector("span").textContent = "🔒";
 
-    if (!correct) {
+  shuffle(item.a).forEach(choice => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "answer-btn";
+    button.textContent = choice;
+    button.addEventListener("click", () => checkAnswer(choice, button));
+    $("answers").appendChild(button);
+  });
+}
 
-        saveScore(false);
+function checkAnswer(choice, button) {
+  if (answered || gameOver) return;
+  answered = true;
 
-        setTimeout(() => {
+  const item = questions[questionIndex];
+  document.querySelectorAll(".answer-btn").forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent === item.c) btn.classList.add("correct");
+  });
 
-            showFailedPage();
-
-        }, 350);
-
-        return;
-    }
-
-
+  if (choice === item.c) {
     score++;
+    $("feedback").textContent = "✓ CORRECT! Agent RRED advances. Door unlocked!";
+    $("worldCaption").textContent = "ACCESS GRANTED // DOOR UNLOCKED";
+    $("nextDoor").classList.add("unlocked");
+    $("nextDoor").querySelector("small").textContent = "UNLOCKED";
+    $("nextDoor").querySelector("span").textContent = "✓";
 
-    document
-        .getElementById(
-            "scoreDisplay"
-        )
-        .textContent = score;
+    $("gameAgent").classList.add("walking");
+    $("gameAgent").style.left = "68%";
+    $("nextBtn").classList.remove("hidden");
+  } else {
+    button.classList.add("wrong");
+    hearts--;
+    $("hearts").textContent = hearts > 0 ? Array(hearts).fill("♥").join(" ") : "—";
+    $("feedback").className = "feedback bad";
+    $("feedback").textContent = hearts > 0
+      ? "✕ The enemy attacks! One heart lost. Returning to the starting point..."
+      : "✕ GAME OVER. The agent has lost all three hearts.";
 
+    $("worldCaption").textContent = "WARNING // ENEMY ATTACK";
+    $("attackFlash").classList.remove("active");
+    void $("attackFlash").offsetWidth;
+    $("attackFlash").classList.add("active");
 
-    currentQuestion++;
-
-
-    if (
-        currentQuestion >=
-        totalQuestions
-    ) {
-
-        saveScore(true);
-
-        setTimeout(() => {
-
-            showPage("perfectPage");
-
-        }, 450);
-
-        return;
-    }
-
+    $("gameAgent").classList.add("walking");
+    $("gameAgent").style.filter = "brightness(1.7) sepia(1)";
 
     setTimeout(() => {
+      $("gameAgent").style.left = "18%";
+      $("gameAgent").style.filter = "";
+      $("gameAgent").classList.remove("walking");
+      $("startDoor").classList.add("unlocked");
+      $("nextDoor").classList.remove("unlocked");
+    }, 500);
 
-        loadQuestion();
-
-    }, 300);
-
-}
-
-
-/* =====================================================
-   FAILED PAGE
-===================================================== */
-
-function showFailedPage() {
-
-    const failedScore =
-        document.getElementById(
-            "failedScore"
-        );
-
-    const failedJudgement =
-        document.getElementById(
-            "failedJudgement"
-        );
-
-    failedScore.textContent =
-        `${score} / ${totalQuestions}`;
-
-    if (score === 0) {
-
-        failedJudgement.textContent =
-            "QUIZ NOT PASSED — 0 CORRECT";
-
+    if (hearts <= 0) {
+      gameOver = true;
+      setTimeout(() => finishGame(false), 1300);
     } else {
-
-        failedJudgement.textContent =
-            `QUIZ NOT PASSED — ${score} CORRECT`;
-
+      // A wrong answer restarts the quiz at Question 1.
+      setTimeout(() => {
+        questionIndex = 0;
+        score = 0;
+        renderQuestion();
+        $("worldCaption").textContent = "BACK AT START // TRY AGAIN";
+      }, 1700);
     }
-
-    statusText.textContent =
-        "QUIZ TERMINATED";
-
-    showPage("failedPage");
-
+  }
 }
 
+$("nextBtn").addEventListener("click", () => {
+  if (gameOver || !answered) return;
 
-/* =====================================================
-   RETRY
-===================================================== */
+  if (questionIndex === questions.length - 1) {
+    finishGame(true);
+    return;
+  }
 
-document
-    .getElementById("retryButton")
-    .addEventListener(
-        "click",
-        function () {
+  questionIndex++;
+  renderQuestion();
+});
 
-            createLightAtButton(this);
+function finishGame(won) {
+  gameOver = true;
 
-            setTimeout(() => {
-
-                showPage("rulesPage");
-
-            }, 300);
-
-        }
-    );
-
-
-/* =====================================================
-   FRIENDSHIP ANSWER
-===================================================== */
-
-document
-    .getElementById("yesFriend")
-    .addEventListener(
-        "click",
-        function () {
-
-            createLightAtButton(this);
-
-            setTimeout(() => {
-
-                showPage("flowerPage");
-
-            }, 400);
-
-        }
-    );
-
-
-document
-    .getElementById("noFriend")
-    .addEventListener(
-        "click",
-        function () {
-
-            createLightAtButton(this);
-
-            setTimeout(() => {
-
-                showPage("thankYouPage");
-
-            }, 400);
-
-        }
-    );
-
-
-/* =====================================================
-   FLOWER FINISH
-===================================================== */
-
-document
-    .getElementById("flowerFinish")
-    .addEventListener(
-        "click",
-        function () {
-
-            createLightAtButton(this);
-
-            setTimeout(() => {
-
-                showPage("thankYouPage");
-
-            }, 350);
-
-        }
-    );
-
-
-/* =====================================================
-   EXIT
-===================================================== */
-
-document
-    .getElementById("exitButton")
-    .addEventListener(
-        "click",
-        function () {
-
-            createLightAtButton(this);
-
-            statusText.textContent =
-                "SESSION COMPLETE";
-
-            alert(
-                `Thank you, ${playerName || "friend"}!`
-            );
-
-        }
-    );
-
-
-/* =====================================================
-   SCORE RECORDING
-===================================================== */
-
-function saveScore(passed) {
-
-    const records =
-        JSON.parse(
-            localStorage.getItem(
-                "jarredQuizRecords"
-            )
-        ) || [];
-
-    const record = {
-
-        name:
-            playerName || "Unknown",
-
-        score,
-
-        total:
-            totalQuestions,
-
-        passed,
-
-        result:
-            passed
-                ? "PASSED"
-                : "NOT PASSED",
-
-        date:
-            new Date()
-                .toLocaleString()
-
-    };
-
-    records.unshift(record);
-
-    /*
-       Keep the latest 20 records.
-    */
-
-    records.splice(20);
-
-    localStorage.setItem(
-        "jarredQuizRecords",
-        JSON.stringify(records)
-    );
-
+  if (won) {
+    $("congratsScore").textContent = `30 / 30 QUESTIONS COMPLETED`;
+    showPage("friendPage");
+  } else {
+    $("endSymbol").textContent = "✕";
+    $("endTitle").textContent = "GAME OVER";
+    $("endMessage").textContent =
+      "The agent has run out of hearts. Log in again to begin a new mission.";
+    $("finalScore").textContent = `CORRECT ANSWERS: ${score} / 30`;
+    showPage("exitPage");
+    $("endSymbol").textContent = "💔";
+  }
 }
 
+// Leaving the game returns to login.
+$("quitBtn").addEventListener("click", () => {
+  $("loginForm").reset();
+  $("loginError").textContent = "";
+  showPage("loginPage");
+});
 
-/* =====================================================
-   SCORE HISTORY
-===================================================== */
+// Friendship choice.
+$("yesFriend").addEventListener("click", () => {
+  startUniverse();
+});
+$("noFriend").addEventListener("click", () => showPage("exitPage"));
+$("exitFinish").addEventListener("click", () => {
+  $("loginForm").reset();
+  showPage("loginPage");
+});
 
-function showHistory() {
+// Universe: 0 heart, 1 flower, 2 message, 3 ring.
+const scenes = [
+  {
+    className: "scene-heart",
+    caption: "A little heart, floating in an endless galaxy.",
+    button: "LET THE FLOWER BLOOM →"
+  },
+  {
+    className: "scene-flower",
+    caption: "Even in a huge universe, a little kindness can bloom.",
+    button: "DISCOVER A MESSAGE →"
+  },
+  {
+    className: "scene-like",
+    caption: "A simple message, shared with no pressure or expectation.",
+    button: "EXPLORE THE FINAL SCENE →"
+  },
+  {
+    className: "scene-ring",
+    caption: "A cinematic symbol of a special moment — no pressure, just a little wonder.",
+    button: "READ THE FINAL MESSAGE →"
+  }
+];
 
-    const list =
-        document.getElementById(
-            "historyList"
-        );
+let sceneIndex = 0;
+let touchStartX = 0;
 
-    const records =
-        JSON.parse(
-            localStorage.getItem(
-                "jarredQuizRecords"
-            )
-        ) || [];
+function startUniverse() {
+  sceneIndex = 0;
+  showPage("universePage");
+  renderScene();
+}
 
-    list.innerHTML = "";
+function renderScene() {
+  const scene = scenes[sceneIndex];
+  const stage = $("universeScene");
 
-    if (!records.length) {
+  stage.classList.remove("scene-heart", "scene-flower", "scene-like", "scene-ring");
+  stage.classList.add(scene.className);
 
-        list.innerHTML = `
-            <p>
-                No quiz records yet.
-            </p>
-        `;
+  $("sceneCount").textContent = `SCENE ${String(sceneIndex + 1).padStart(2, "0")} / 04`;
+  $("cosmicCaption").textContent = scene.caption;
+  $("nextScene").textContent = scene.button;
 
-        return;
+  document.querySelectorAll(".scene-dots i").forEach((dot, i) => {
+    dot.classList.toggle("active", i === sceneIndex);
+  });
+}
+
+function nextUniverseScene() {
+  if (sceneIndex < scenes.length - 1) {
+    sceneIndex++;
+    renderScene();
+  } else {
+    showPage("finalPage");
+  }
+}
+
+$("nextScene").addEventListener("click", nextUniverseScene);
+
+// Touch swipe support for phones/tablets.
+$("universeScene").addEventListener("touchstart", event => {
+  touchStartX = event.changedTouches[0].clientX;
+}, { passive: true });
+
+$("universeScene").addEventListener("touchend", event => {
+  const deltaX = event.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(deltaX) > 55) {
+    if (deltaX < 0) {
+      nextUniverseScene();
+    } else if (sceneIndex > 0) {
+      sceneIndex--;
+      renderScene();
     }
+  }
+}, { passive: true });
 
-    records.forEach(record => {
-
-        const item =
-            document.createElement(
-                "div"
-            );
-
-        item.className =
-            "history-entry";
-
-        item.innerHTML = `
-
-            <div>
-                <div class="history-name">
-                    ${escapeHTML(record.name)}
-                </div>
-
-                <div class="history-status">
-                    ${record.date}
-                </div>
-            </div>
-
-            <div class="history-score">
-                ${record.score}/${record.total}
-            </div>
-
-            <div class="history-status">
-                ${record.result}
-            </div>
-
-        `;
-
-        list.appendChild(item);
-
-    });
-
-}
-
-
-/* =====================================================
-   CLEAR HISTORY
-===================================================== */
-
-document
-    .getElementById("clearHistory")
-    .addEventListener(
-        "click",
-        function () {
-
-            localStorage.removeItem(
-                "jarredQuizRecords"
-            );
-
-            showHistory();
-
-            createLightAtButton(this);
-
-        }
-    );
-
-
-/* =====================================================
-   BASIC HTML ESCAPE
-===================================================== */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-}
-
-
-/* =====================================================
-   CLICK LIGHT EFFECT
-===================================================== */
-
-function createLightAtButton(element) {
-
-    const rect =
-        element.getBoundingClientRect();
-
-    const x =
-        rect.left +
-        rect.width / 2;
-
-    const y =
-        rect.top +
-        rect.height / 2;
-
-    createLight(x, y);
-
-}
-
-
-function createLight(x, y) {
-
-    clickLight.style.left =
-        `${x}px`;
-
-    clickLight.style.top =
-        `${y}px`;
-
-    clickLight.classList.remove(
-        "active"
-    );
-
-    /*
-       Force animation restart.
-    */
-
-    void clickLight.offsetWidth;
-
-    clickLight.classList.add(
-        "active"
-    );
-
-}
-
-
-/* =====================================================
-   CLICK ANYWHERE LIGHT
-===================================================== */
-
-document.addEventListener(
-    "click",
-    function (event) {
-
-        if (
-            event.target.closest(
-                "button"
-            ) ||
-            event.target.closest(
-                "input"
-            )
-        ) {
-
-            return;
-        }
-
-        createLight(
-            event.clientX,
-            event.clientY
-        );
-
+// Mouse drag also works on desktop.
+let mouseStartX = null;
+$("universeScene").addEventListener("pointerdown", event => {
+  if (event.pointerType === "mouse") mouseStartX = event.clientX;
+});
+$("universeScene").addEventListener("pointerup", event => {
+  if (mouseStartX === null) return;
+  const deltaX = event.clientX - mouseStartX;
+  mouseStartX = null;
+  if (Math.abs(deltaX) > 70) {
+    if (deltaX < 0) {
+      nextUniverseScene();
+    } else if (sceneIndex > 0) {
+      sceneIndex--;
+      renderScene();
     }
-);
+  }
+});
 
-
-/* =====================================================
-   DOTS
-===================================================== */
-
-document
-    .querySelectorAll(".dot")
-    .forEach(dot => {
-
-        dot.addEventListener(
-            "click",
-            function () {
-
-                /*
-                   Dots are visual indicators.
-                   They do not bypass the quiz.
-                */
-
-                createLightAtButton(this);
-
-            }
-        );
-
-    });
-
-
-/* =====================================================
-   KEYBOARD MOTION
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key === "Enter" &&
-            document.activeElement.tagName !== "INPUT"
-        ) {
-
-            const activePage =
-                document.querySelector(
-                    ".active-page"
-                );
-
-            const button =
-                activePage?.querySelector(
-                    ".main-button"
-                );
-
-            if (button) {
-
-                button.click();
-
-            }
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
-
-updatePageIndicator(
-    "namePage"
-);
-
-showHistory();
+$("restartBtn").addEventListener("click", () => {
+  $("loginForm").reset();
+  $("loginError").textContent = "";
+  showPage("loginPage");
+});
