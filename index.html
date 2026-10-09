@@ -1,551 +1,201 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Jarred's Universe Quiz</title>
-
-    <link rel="stylesheet" href="./style.css">
-    <script src="./script.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#06130c">
+  <title>RRED QUIZ! — Classified Mission</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <canvas id="stars"></canvas>
 
-    <!-- =========================
-         UNIVERSE BACKGROUND
-    ========================== -->
-    <div class="space-background">
-        <div class="stars stars-1"></div>
-        <div class="stars stars-2"></div>
-        <div class="stars stars-3"></div>
+  <!-- LOGIN -->
+  <section id="loginPage" class="page login-page">
+    <div class="login-card glass">
+      <div class="mini-logo">RR<span>.</span></div>
+      <p class="eyebrow">CLASSIFIED PERSONNEL ACCESS</p>
+      <h1>RRED <span>QUIZ!</span></h1>
+      <p class="muted">One agent. Thirty questions. One secret universe.</p>
 
-        <div class="planet planet-one"></div>
-        <div class="planet planet-two"></div>
+      <div class="agent-stage login-agent-stage">
+        <div class="light-beam"></div>
+        <div class="agent" id="loginAgent">
+          <div class="hat"><span>✦</span></div>
+          <div class="agent-head">
+            <div class="eyes"><i class="eye"><b></b></i><i class="eye"><b></b></i></div>
+            <div class="face-mask"></div>
+          </div>
+          <div class="agent-body"><span>RRED</span><div class="tie"></div></div>
+          <div class="agent-arm"></div><div class="spyglass">◉</div>
+          <div class="agent-leg leg1"></div><div class="agent-leg leg2"></div>
+        </div>
+      </div>
 
-        <div class="nebula"></div>
+      <form id="loginForm">
+        <label for="email">EMAIL</label>
+        <input id="email" type="email" autocomplete="email"
+          placeholder="agent@example.com" required>
+        <label for="password">DEMO PASSWORD</label>
+        <input id="password" type="password" autocomplete="current-password"
+          placeholder="Enter a demo password" minlength="4" required>
+        <p class="security-note">Demo access only. Never enter your Facebook password here.</p>
+        <p id="loginError" class="error" role="alert"></p>
+        <button class="primary" type="submit">ENTER THE MISSION <span>↗</span></button>
+      </form>
+      <p class="tiny-note">RRED QUIZ // PERSONNEL INTELLIGENCE DIVISION</p>
     </div>
+  </section>
 
-    <div id="clickLight"></div>
-
-
-    <!-- =========================
-         TOP PAGE INDICATOR
-    ========================== -->
-    <header class="top-bar">
-
-        <div class="brand">
-            <span class="brand-symbol">◇</span>
-            RRED UNIVERSE
-        </div>
-
-        <div class="page-indicator">
-            <span id="pageNumber">01</span>
-            <div class="indicator-line">
-                <div id="indicatorProgress"></div>
-            </div>
-            <span id="pageName">WELCOME</span>
-        </div>
-
+  <!-- QUIZ GAME -->
+  <section id="gamePage" class="page game-page hidden">
+    <header class="topbar">
+      <div class="wordmark">RRED<span> QUIZ!</span></div>
+      <div class="mission-status"><i></i> MISSION ACTIVE</div>
+      <button id="quitBtn" class="ghost-btn">EXIT ↗</button>
     </header>
 
-
-    <!-- =========================
-         PAGE 1 — NAME
-    ========================== -->
-    <main>
-
-        <section class="quiz-page active-page" id="namePage">
-
-            <div class="diamond-decoration"></div>
-
-            <div class="quiz-card intro-card">
-
-                <div class="small-label">
-                    A little journey through the life of Rred 
-                </div>
-
-                <h1>
-                    WELCOME TO<br>
-                    <span>MY UNIVERSE</span>
-                </h1>
-
-                <p class="intro-text">
-                    Before entering Rred personal universe,
-                    identify yourself first.
-                </p>
-
-                <div class="input-group">
-
-                    <label for="firstName">
-                        FIRST NAME
-                    </label>
-
-                    <input
-                        type="text"
-                        id="firstName"
-                        placeholder="Enter your first name"
-                        autocomplete="off"
-                    >
-
-                </div>
-
-                <div class="input-group">
-
-                    <label for="lastName">
-                        LAST NAME
-                    </label>
-
-                    <input
-                        type="text"
-                        id="lastName"
-                        placeholder="Enter your last name"
-                        autocomplete="off"
-                    >
-
-                </div>
-
-                <p id="nameError" class="error-message"></p>
-
-                <button
-                    type="button"
-                    class="main-button"
-                    id="startButton"
-                >
-                    ENTER THE QUIZ
-                    <span>→</span>
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PAGE 2 — RULES
-        ========================== -->
-        <section class="quiz-page" id="rulesPage">
-
-            <div class="quiz-card rules-card">
-
-                <div class="page-tag">
-                    02 / RULES
-                </div>
-
-                <h2>
-                    KNOW ME
-                    <span>IF YOU CAN.</span>
-                </h2>
-
-                <div class="rule-list">
-
-                    <div class="rule">
-                        <span>01</span>
-                        <p>
-                            Every question is about Jarred.
-                        </p>
-                    </div>
-
-                    <div class="rule">
-                        <span>02</span>
-                        <p>
-                            Each question has four choices.
-                        </p>
-                    </div>
-
-                    <div class="rule">
-                        <span>03</span>
-                        <p>
-                            Choose carefully.
-                        </p>
-                    </div>
-
-                    <div class="rule danger-rule">
-                        <span>04</span>
-                        <p>
-                            One wrong answer means the quiz ends immediately.
-                        </p>
-                    </div>
-
-                    <div class="rule">
-                        <span>05</span>
-                        <p>
-                            Get everything correct to unlock the special
-                            friendship ending.
-                        </p>
-                    </div>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="main-button"
-                    data-next="quizPage"
-                >
-                    ACCEPT & START
-                    <span>→</span>
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PAGE 3 — QUIZ
-        ========================== -->
-        <section class="quiz-page" id="quizPage">
-
-            <div class="quiz-card question-card">
-
-                <div class="quiz-top">
-
-                    <div>
-                        <div class="page-tag">
-                            PERSONAL QUIZ
-                        </div>
-
-                        <div id="questionNumber">
-                            QUESTION 01
-                        </div>
-                    </div>
-
-                    <div class="score-box">
-                        SCORE
-                        <strong id="scoreDisplay">0</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="question-progress">
-                    <div id="questionProgress"></div>
-                </div>
-
-
-                <h2 id="questionText">
-                    Question goes here
-                </h2>
-
-
-                <div
-                    class="choices"
-                    id="choicesContainer"
-                >
-                    <!-- JavaScript inserts choices -->
-                </div>
-
-
-                <div
-                    id="questionMessage"
-                    class="question-message"
-                ></div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PAGE 4 — FAILED
-        ========================== -->
-        <section class="quiz-page" id="failedPage">
-
-            <div class="quiz-card result-card failed-card">
-
-                <div class="result-icon">
-                    ×
-                </div>
-
-                <div class="page-tag">
-                    QUIZ TERMINATED
-                </div>
-
-                <h2>
-                    NOT THIS TIME.
-                </h2>
-
-                <p id="failedMessage">
-                    You got one of the answers wrong.
-                </p>
-
-                <div class="final-score">
-
-                    <span>FINAL SCORE</span>
-
-                    <strong id="failedScore">
-                        0 / 12
-                    </strong>
-
-                </div>
-
-                <div
-                    class="judgement"
-                    id="failedJudgement"
-                >
-                    QUIZ NOT PASSED
-                </div>
-
-                <button
-                    type="button"
-                    class="main-button"
-                    id="retryButton"
-                >
-                    TRY AGAIN
-                    <span>↻</span>
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PAGE 5 — PERFECT
-        ========================== -->
-        <section class="quiz-page" id="perfectPage">
-
-            <div class="quiz-card perfect-card">
-
-                <div class="perfect-symbol">
-                    ✦
-                </div>
-
-                <div class="page-tag">
-                    PERFECT SCORE
-                </div>
-
-                <h2>
-                    YOU KNOW
-                    <span>JARRED.</span>
-                </h2>
-
-                <p>
-                    Every answer was correct.
-                </p>
-
-                <div class="perfect-score">
-                    12 / 12
-                </div>
-
-                <p class="special-text">
-                    You have unlocked the special friendship page.
-                </p>
-
-                <button
-                    type="button"
-                    class="main-button"
-                    data-next="friendshipPage"
-                >
-                    CONTINUE
-                    <span>→</span>
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PAGE 6 — FRIENDSHIP
-        ========================== -->
-        <section class="quiz-page" id="friendshipPage">
-
-            <div class="quiz-card friendship-card">
-
-                <div class="friendship-glow"></div>
-
-                <div class="friendship-symbol">
-                    ♡
-                </div>
-
-                <div class="page-tag">
-                    SPECIAL FRIENDSHIP PAGE
-                </div>
-
-                <h2>
-                    ONE LAST
-                    <span>QUESTION.</span>
-                </h2>
-
-                <p class="friendship-question">
-                    Do you consider Jarred a close friend?
-                </p>
-
-                <div class="yes-no-buttons">
-
-                    <button
-                        type="button"
-                        class="answer-button yes-button"
-                        id="yesFriend"
-                    >
-                        YES
-                    </button>
-
-                    <button
-                        type="button"
-                        class="answer-button no-button"
-                        id="noFriend"
-                    >
-                        NO
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PAGE 7 — FLOWER
-        ========================== -->
-        <section class="quiz-page" id="flowerPage">
-
-            <div class="flower-page">
-
-                <div class="flower-stars"></div>
-
-                <div class="flower-container">
-
-                    <div class="flower">
-                        <div class="petal petal-1"></div>
-                        <div class="petal petal-2"></div>
-                        <div class="petal petal-3"></div>
-                        <div class="petal petal-4"></div>
-                        <div class="petal petal-5"></div>
-                        <div class="flower-center"></div>
-                    </div>
-
-                    <div class="stem"></div>
-                    <div class="leaf leaf-left"></div>
-                    <div class="leaf leaf-right"></div>
-
-                </div>
-
-                <h2>
-                    FRIENDSHIP
-                    <span>UNLOCKED.</span>
-                </h2>
-
-                <p>
-                    Thank you for knowing Jarred so well.
-                </p>
-
-                <button
-                    type="button"
-                    class="main-button"
-                    id="flowerFinish"
-                >
-                    FINISH
-                    <span>✓</span>
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PAGE 8 — THANK YOU
-        ========================== -->
-        <section class="quiz-page" id="thankYouPage">
-
-            <div class="quiz-card result-card">
-
-                <div class="result-icon">
-                    ✓
-                </div>
-
-                <div class="page-tag">
-                    THANK YOU
-                </div>
-
-                <h2>
-                    THANK YOU
-                    <span>FOR PLAYING.</span>
-                </h2>
-
-                <p>
-                    Your answers have been recorded for this session.
-                </p>
-
-                <button
-                    type="button"
-                    class="main-button"
-                    id="exitButton"
-                >
-                    EXIT
-                    <span>→</span>
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             SCORE HISTORY
-        ========================== -->
-        <section class="quiz-page" id="historyPage">
-
-            <div class="quiz-card history-card">
-
-                <div class="page-tag">
-                    SCORE HISTORY
-                </div>
-
-                <h2>
-                    QUIZ
-                    <span>RECORDS.</span>
-                </h2>
-
-                <div id="historyList">
-                    <!-- JavaScript -->
-                </div>
-
-                <button
-                    type="button"
-                    class="main-button"
-                    id="clearHistory"
-                >
-                    CLEAR RECORDS
-                    <span>×</span>
-                </button>
-
-            </div>
-
-        </section>
-
+    <main class="game-layout">
+      <section class="world glass">
+        <div class="world-heading">LOCATION: NIGHT FACILITY <span>● LIVE</span></div>
+        <div class="world-light"></div>
+        <div class="floor-grid"></div>
+
+        <div id="startDoor" class="door start-door">
+          <b>01</b><small>START</small><span>✓</span>
+        </div>
+        <div id="nextDoor" class="door next-door">
+          <b>02</b><small>LOCKED</small><span>🔒</span>
+        </div>
+
+        <div id="enemy" class="enemy">
+          <i></i><i></i><b></b>
+        </div>
+
+        <div id="gameAgent" class="agent game-agent">
+          <div class="hat"><span>✦</span></div>
+          <div class="agent-head">
+            <div class="eyes"><i class="eye"><b></b></i><i class="eye"><b></b></i></div>
+            <div class="face-mask"></div>
+          </div>
+          <div class="agent-body"><span>RRED</span><div class="tie"></div></div>
+          <div class="agent-arm"></div><div class="spyglass">◉</div>
+          <div class="agent-leg leg1"></div><div class="agent-leg leg2"></div>
+        </div>
+
+        <div id="worldCaption" class="world-caption">AGENT RRED: AWAITING ORDERS</div>
+        <div id="attackFlash" class="attack-flash"></div>
+        <div class="world-coordinate">SECTOR 026 // NIGHT OPS</div>
+      </section>
+
+      <aside class="quiz-panel glass">
+        <p class="eyebrow">CONFIDENTIAL // PERSONNEL FILE</p>
+        <h2>Agent's <span>Challenge</span></h2>
+        <p class="muted">Think twice. Choose once.</p>
+
+        <div class="stats">
+          <div><small>QUESTION</small><b id="questionCount">01 / 30</b></div>
+          <div><small>AGENT HEARTS</small><b id="hearts" class="hearts">♥ ♥ ♥</b></div>
+        </div>
+        <div class="progress"><div id="progressBar"></div></div>
+
+        <div class="question-card">
+          <p id="questionNumber" class="question-number">QUESTION 01</p>
+          <h3 id="questionText">Loading question...</h3>
+          <div id="answers" class="answers"></div>
+          <p id="feedback" class="feedback" aria-live="polite"></p>
+          <button id="nextBtn" class="primary hidden">OPEN NEXT DOOR →</button>
+        </div>
+        <div class="hint">
+          <b>ⓘ AGENT TIP</b>
+          <p>Look closely at every choice. Some answers sound similar, but only one matches the file.</p>
+        </div>
+      </aside>
     </main>
+    <footer class="game-footer"><span>RRED QUIZ!</span><span>PERSONAL INTELLIGENCE DIVISION</span><span>BUILD 030</span></footer>
+  </section>
 
+  <!-- CONGRATULATIONS / FRIENDSHIP -->
+  <section id="friendPage" class="page centered-page hidden">
+    <div class="celebration glass">
+      <div class="confetti" aria-hidden="true">✦　✧　✦　✧　✦</div>
+      <div class="clap" aria-label="Clapping hands animation">👏</div>
+      <p class="eyebrow">MISSION ACCOMPLISHED</p>
+      <h1>YOU DID IT, <span>AGENT!</span></h1>
+      <p class="muted">All 30 questions completed. You unlocked the secret file.</p>
+      <div class="score-line" id="congratsScore">30 / 30 QUESTIONS</div>
+      <div class="friend-box">
+        <div class="friend-icon">✉</div>
+        <h2>Can we be friends?</h2>
+        <p>No pressure. I'd be happy to get to know you as a friend.</p>
+        <div class="friend-buttons">
+          <button id="yesFriend" class="primary">YES, LET'S BE FRIENDS ✨</button>
+          <button id="noFriend" class="ghost-btn">NO, THANK YOU</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- =========================
-         BOTTOM STATUS
-    ========================== -->
-    <div class="bottom-status">
+  <!-- DENIED -->
+  <section id="exitPage" class="page centered-page hidden">
+    <div class="end-card glass">
+      <div class="big-symbol">🌙</div>
+      <p class="eyebrow">MISSION CLOSED</p>
+      <h1>THANKS FOR VISITING</h1>
+      <p class="muted">No worries. Thanks for playing RRED QUIZ! Have a wonderful day.</p>
+      <button class="primary" id="exitFinish">CLOSE EXPERIENCE</button>
+    </div>
+  </section>
 
-        <span class="status-dot"></span>
-
-        <span id="statusText">
-            UNIVERSE ONLINE
-        </span>
-
+  <!-- SECRET UNIVERSE -->
+  <section id="universePage" class="page universe-page hidden">
+    <div class="universe-stars" id="universeStars"></div>
+    <div class="universe-top">
+      <span>RRED // SECRET UNIVERSE</span>
+      <span id="sceneCount">SCENE 01 / 04</span>
     </div>
 
-
-    <!-- Page dots -->
-    <div class="page-dots">
-
-        <span class="dot active-dot" data-page="namePage"></span>
-        <span class="dot" data-page="rulesPage"></span>
-        <span class="dot" data-page="quizPage"></span>
-        <span class="dot" data-page="failedPage"></span>
-        <span class="dot" data-page="perfectPage"></span>
-        <span class="dot" data-page="friendshipPage"></span>
-        <span class="dot" data-page="flowerPage"></span>
-
+    <div id="universeScene" class="universe-scene scene-heart">
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+      <div class="cosmic-object" id="cosmicObject">
+        <div class="heart-shape">♥</div>
+        <div class="flower-shape">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+          <b></b>
+        </div>
+        <div class="like-text">I LIKE YOU</div>
+        <div class="ring-scene">
+          <div class="ring-glow"></div>
+          <div class="ring-band"></div>
+          <div class="ring-stone"></div>
+          <div class="ring-hand">🤲</div>
+        </div>
+      </div>
+      <div class="cosmic-caption" id="cosmicCaption">A little heart, floating in an endless galaxy.</div>
     </div>
 
+    <div class="universe-bottom">
+      <p id="swipeHelp">SWIPE LEFT OR RIGHT • OR USE THE BUTTON</p>
+      <div class="scene-dots"><i class="active"></i><i></i><i></i><i></i></div>
+      <button id="nextScene" class="primary universe-next">DISCOVER THE NEXT SCENE →</button>
+    </div>
+  </section>
+
+  <!-- FINAL MESSAGE -->
+  <section id="finalPage" class="page centered-page final-page hidden">
+    <div class="final-stars"></div>
+    <div class="final-card glass">
+      <div class="final-planet">✧</div>
+      <p class="eyebrow">END OF TRANSMISSION</p>
+      <h1>THE UNIVERSE IS BIG.</h1>
+      <h2>I'm glad our paths crossed.</h2>
+      <p class="muted">Thank you for exploring my little universe. Whatever your answer, I hope this made you smile.</p>
+      <button id="restartBtn" class="primary">RETURN TO THE BEGINNING ↗</button>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
 </body>
 </html>
